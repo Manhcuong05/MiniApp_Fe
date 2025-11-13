@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "FECredit - Vay Nhanh",
+    "textColor": { "light": "#000000", "dark": "#ffffff" },
+    "statusBar": "transparent",
+    "actionBarHidden": true,
+    "hideIOSSafeAreaBottom": true,
+    "hideAndroidBottomNavigationBar": false
+  },
+  "listCSS": [
+    "zmp-ui/zaui.css",
+    "tailwind.css",
+    "app.css"
+  ],
+  "listSyncJS": [
+    "app.js"
+  ],
+  "listAsyncJS": []
+}

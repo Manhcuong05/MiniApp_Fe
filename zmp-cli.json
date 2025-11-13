@@ -1,0 +1,20 @@
+{
+  "cwd": "/Users/lap15182-local/Documents/zmp-blank-templates",
+  "name": "zmp-blank-templates",
+  "appId": "3066755966491390790",
+  "framework": "react-typescript",
+  "cssPreProcessor": "scss",
+  "includeTailwind": true,
+  "package": "zmp-ui",
+  "stateManagement": "jotai",
+  "newProject": true,
+  "template": "single-view",
+  "theming": {
+    "customColor": false,
+    "color": "#007aff",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": false,
+    "useUiKits": true
+  }
+}

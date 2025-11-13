@@ -1,0 +1,10 @@
+{
+  "appId": "com.adflex.fecredit",
+  "appName": "FE Credit MiniApp",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "cleartext": true,
+    "androidScheme": "https"
+  }
+}
