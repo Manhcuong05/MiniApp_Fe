@@ -1,0 +1,47 @@
+name: Build iOS
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Capacitor
+        run: npm install @capacitor/cli @capacitor/ios
+
+      - name: Build web
+        run: npm run build
+
+      - name: Sync iOS
+        run: npx cap sync ios
+
+      - name: Build UNSIGNED App
+        run: |
+          xcodebuild -workspace ios/App/App.xcworkspace \
+                      -scheme App \
+                      -configuration Debug \
+                      -sdk iphoneos \
+                      -archivePath build/app.xcarchive \
+                      archive \
+                      CODE_SIGNING_ALLOWED=NO
+
+      - name: Export .app
+        run: |
+          mkdir -p build/app
+          cp -r build/app.xcarchive/Products/Applications/*.app build/app/
+
+      - name: Upload .app
+        uses: actions/upload-artifact@v4
+        with:
+          name: fecredit-ios-app
+          path: build/app/*.app

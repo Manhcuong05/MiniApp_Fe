@@ -20,12 +20,11 @@
     "deploy": "zmp deploy",
     "build": "vite build",
     "dev": "vite"
-
-
   },
   "dependencies": {
     "@capacitor/android": "^7.4.4",
     "@capacitor/core": "^7.4.4",
+    "@capacitor/ios": "^7.4.4",
     "canvas-confetti": "^1.9.4",
     "jotai": "^2.12.1",
     "react": "^18.3.1",
