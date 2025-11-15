@@ -5,7 +5,9 @@ import { useState, useEffect } from "react";
 export default function LoanInfo() {
   const navigate = useNavigate();
 
-
+  // ==========================
+  // STATE
+  // ==========================
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
 
@@ -22,7 +24,9 @@ export default function LoanInfo() {
   const [amount, setAmount] = useState(10_000_000);
   const [term, setTerm] = useState(6);
 
-
+  // ==========================
+  // AUTO-FILL từ Zalo nếu có
+  // ==========================
   useEffect(() => {
     if ((window as any).zmp) {
       (window as any).zmp.getUserInfo({
@@ -34,6 +38,10 @@ export default function LoanInfo() {
       });
     }
   }, []);
+
+  // ==========================
+  // VALIDATION RULES
+  // ==========================
 
   const validateName = (v: string) => {
     if (!v.trim()) return "Tên không được để trống";
@@ -56,12 +64,15 @@ export default function LoanInfo() {
   };
 
   const validateCMND = (v: string) => {
-    if (!v.trim()) return ""; 
+    if (!v.trim()) return ""; // được phép để trống
     if (!/^[0-9]*$/.test(v)) return "CMND chỉ được chứa số";
     if (v.length !== 9) return "CMND phải gồm 9 số";
     return "";
   };
 
+  // ==========================
+  // TÍNH TOÁN
+  // ==========================
 
   const monthlyPayment = () => {
     const rate = 0.0325;
@@ -73,7 +84,9 @@ export default function LoanInfo() {
 
   const formatVND = (num: number) => num.toLocaleString("vi-VN");
 
-
+  // ==========================
+  // NEXT
+  // ==========================
 
   const next = () => {
     const cleanAmount = Number(amount);
@@ -101,6 +114,9 @@ export default function LoanInfo() {
     navigate("/confirm");
   };
 
+  // ==========================
+  // UI (KHÔNG THAY ĐỔI)
+  // ==========================
 
   return (
     <Page className="bg-white">
@@ -109,10 +125,18 @@ export default function LoanInfo() {
       </div>
 
       <Box className="px-6 pt-6">
+         {/* ===================== THANH TÍNH TIỀN BỊ XOÁ – THÊM LẠI ===================== */}
+        <div className="bg-green-600 text-white rounded-2xl p-6 mb-6 text-center">
+          <Text className="text-lg">Lãi suất từ: 3.25%/tháng</Text>
+          <Text className="text-lg underline">Tìm hiểu thêm</Text>
+          <Text className="text-3xl font-bold mt-3">
+            Mỗi tháng trả: {formatVND(monthlyPayment())} đ
+          </Text>
+        </div>
 
         <Text className="text-xl font-bold mb-4">Thông tin người vay</Text>
 
-
+        {/* ==================== HỌ TÊN ==================== */}
         <Input
           label="Họ tên đầy đủ"
           value={name}
@@ -125,7 +149,7 @@ export default function LoanInfo() {
         />
         {nameError && <Text className="text-red-500 text-sm mb-3">{nameError}</Text>}
 
-      
+        {/* ==================== SỐ ĐIỆN THOẠI ==================== */}
         <Input
           label="Số điện thoại"
           value={phone}
@@ -139,7 +163,7 @@ export default function LoanInfo() {
         />
         {phoneError && <Text className="text-red-500 text-sm mb-3">{phoneError}</Text>}
 
-      
+        {/* ==================== CCCD ==================== */}
         <Input
           label="Số CCCD"
           value={cccd}
@@ -148,12 +172,12 @@ export default function LoanInfo() {
             if (/^[0-9]*$/.test(v)) setCccd(v);
             setCccdError(validateCCCD(v));
           }}
-          placeholder="025205009715"
+          placeholder="025205009716"
           className="mb-1"
         />
         {cccdError && <Text className="text-red-500 text-sm mb-3">{cccdError}</Text>}
 
-     
+        {/* ==================== CMND CŨ ==================== */}
         <Input
           label="Số CMND cũ (nếu có)"
           value={cmndOld}
@@ -167,7 +191,7 @@ export default function LoanInfo() {
         />
         {cmndOldError && <Text className="text-red-500 text-sm mb-3">{cmndOldError}</Text>}
 
-      
+        {/* ==================== GIỮ NGUYÊN CÁC PHẦN KHÁC ==================== */}
 
         <div className="flex items-center mb-6">
           <Checkbox
@@ -178,6 +202,7 @@ export default function LoanInfo() {
           <Text className="ml-3">Bảo hiểm khoản vay</Text>
         </div>
 
+        {/* Slider tiền */}
         <Text className="font-bold mb-2">Số tiền cần vay</Text>
         <div className="mb-6">
           <Slider
@@ -190,7 +215,7 @@ export default function LoanInfo() {
           />
         </div>
 
-
+        {/* Slider kỳ hạn */}
         <Text className="font-bold mb-2">Kỳ hạn vay</Text>
         <div className="mb-8">
           <Slider
@@ -210,6 +235,7 @@ export default function LoanInfo() {
           </Text>
         </div>
 
+        {/* ==================== NÚT TIẾP THEO ==================== */}
         <Button
           className="w-full bg-green-600 text-white font-bold text-lg rounded-full"
           size="large"
