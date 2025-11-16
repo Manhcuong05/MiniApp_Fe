@@ -125,8 +125,10 @@ export default function LoanInfo() {
 
         {/* ==== THANH KÉO SỐ TIỀN VAY ĐƯA LÊN TRƯỚC ==== */}
         <Text className="font-bold mb-2">Số tiền cần vay</Text>
+
+        {/* Hiển thị số tiền màu xanh */}
         <Text className="text-green-600 font-semibold mb-1">
-          {formatVND(amount)} đ
+          {formatVND(amount)} 
         </Text>
 
         <div className="mb-6">
@@ -136,7 +138,7 @@ export default function LoanInfo() {
             step={1_000_000}
             value={amount}
             onChange={(v) => setAmount(Array.isArray(v) ? v[0] : v)}
-            label=""   
+            label=""   // Ẩn label mặc định để không bị trùng
           />
         </div>
 
@@ -154,14 +156,18 @@ export default function LoanInfo() {
         <Text className="font-bold mb-2">Kỳ hạn vay</Text>
 
         <Select
-          value={term}
-          onChange={(v) => setTerm(Number(v))}
+          value={String(term)}                 // <- Quan trọng: Select nhận string
+          onChange={(v) => setTerm(Number(v))} // <- lưu lại dạng số
           className="mb-8"
+          placeholder="Chọn kỳ hạn"
         >
           {[3, 6, 9, 12, 18, 24, 36].map((m) => (
-            <Select.Option key={m} value={m}>{m} tháng</Select.Option>
+            <Select.Option key={m} value={String(m)}>
+              {m} tháng
+            </Select.Option>
           ))}
         </Select>
+
 
 
         {/* ======================== CÁC PHẦN BÊN DƯỚI GIỮ NGUYÊN ======================== */}
