@@ -153,20 +153,18 @@ export default function LoanInfo() {
         </div>
 
         {/* ==================== KỲ HẠN VAY ==================== */}
-        {/* ==================== KỲ HẠN VAY ==================== */}
         <Text className="font-bold mb-2">Kỳ hạn vay</Text>
 
-        <Select
-          value={term}
-          onChange={(v) => setTerm(Number(v))}
-          className="mb-8"
-        >
-          {[3, 6, 9, 12, 18, 24, 36].map((m) => (
-            <Select.Option key={m} value={m}>
-              {m} tháng
-            </Select.Option>
-          ))}
-        </Select>
+        <div className="mb-8">
+          <Slider
+            min={3}
+            max={36}
+            step={3}
+            value={term}
+            onChange={(v) => setTerm(Array.isArray(v) ? v[0] : v)}
+            label={`${term} tháng`}
+          />
+        </div>
 
 
 
