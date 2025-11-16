@@ -1,4 +1,4 @@
-import { Page, Text, Input, Button, Box, Checkbox, Slider, Select, Modal } from "zmp-ui";
+import { Page, Text, Input, Button, Box, Checkbox, Slider, Select } from "zmp-ui";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -112,9 +112,6 @@ export default function LoanInfo() {
     navigate("/confirm");
   };
 
-  const [showInterestModal, setShowInterestModal] = useState(false);
-
-
   // ==========================
   // UI
   // ==========================
@@ -147,22 +144,13 @@ export default function LoanInfo() {
 
 
         {/* ==== BOX MỖI THÁNG PHẢI TRẢ (NGUYÊN UI) ==== */}
-
         <div className="bg-green-600 text-white rounded-2xl p-6 mb-6 text-center">
           <Text className="text-lg">Lãi suất từ: 3.25%/tháng</Text>
-
-          <Text
-            className="text-lg underline cursor-pointer"
-            onClick={() => setShowInterestModal(true)}
-          >
-            Tìm hiểu thêm
-          </Text>
-
+          <Text className="text-lg underline">Tìm hiểu thêm</Text>
           <Text className="text-3xl font-bold mt-3">
             Mỗi tháng trả: {formatVND(monthlyPayment())} đ
           </Text>
         </div>
-
 
         {/* ==================== KỲ HẠN VAY ==================== */}
         <Text className="font-bold mb-2">Kỳ hạn vay</Text>
@@ -271,49 +259,6 @@ export default function LoanInfo() {
           Tiếp theo
         </Button>
       </Box>
-      {/* ==== POPUP THÔNG TIN LÃI SUẤT ==== */}
-<Modal
-  visible={showInterestModal}
-  onClose={() => setShowInterestModal(false)}
-  title="Thông tin lãi suất"
->
-  <Box className="p-4 space-y-3">
-
-    <Text className="text-base font-semibold text-green-700">
-      1. Lãi suất áp dụng
-    </Text>
-    <Text className="text-sm leading-6 text-gray-700">
-      • Lãi suất từ <b>3.25%/tháng</b>, áp dụng theo dư nợ giảm dần.<br/>
-      • Lãi suất có thể thay đổi theo hồ sơ và hạn mức được duyệt.
-    </Text>
-
-    <Text className="text-base font-semibold text-green-700 pt-2">
-      2. Cách tính lãi
-    </Text>
-    <Text className="text-sm leading-6 text-gray-700">
-      • Tiền lãi = Dư nợ còn lại × Lãi suất tháng.<br/>
-      • Mỗi tháng dư nợ giảm → lãi giảm tương ứng.
-    </Text>
-
-    <Text className="text-base font-semibold text-green-700 pt-2">
-      3. Lưu ý quan trọng
-    </Text>
-    <Text className="text-sm leading-6 text-gray-700">
-      • Khoản vay được thẩm định theo thông tin bạn cung cấp.<br/>
-      • Cần bảo đảm thông tin cá nhân chính xác.<br/>
-      • FE Credit có thể liên hệ xác minh khi cần thiết.
-    </Text>
-
-    <Button
-      className="w-full bg-green-600 text-white font-bold rounded-full mt-4"
-      onClick={() => setShowInterestModal(false)}
-    >
-      Đóng
-    </Button>
-
-  </Box>
-</Modal>
-
     </Page>
   );
 }
