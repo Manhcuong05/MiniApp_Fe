@@ -145,8 +145,9 @@ export default function LoanInfo() {
           </Text>
         </div>
 
-        {/* ======================== KỲ HẠN VAY → DROPDOWN ======================== */}
+        {/* ==================== KỲ HẠN VAY ==================== */}
         <Text className="font-bold mb-2">Kỳ hạn vay</Text>
+
         <Select
           value={term}
           onChange={(v) => setTerm(Number(v))}
@@ -156,6 +157,7 @@ export default function LoanInfo() {
             <Select.Option key={m} value={m}>{m} tháng</Select.Option>
           ))}
         </Select>
+
 
         {/* ======================== CÁC PHẦN BÊN DƯỚI GIỮ NGUYÊN ======================== */}
 
