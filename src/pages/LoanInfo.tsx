@@ -1,4 +1,4 @@
-import { Page, Text, Input, Button, Box, Checkbox, Slider } from "zmp-ui";
+import { Page, Text, Input, Button, Box, Checkbox, Slider, Select } from "zmp-ui";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -64,7 +64,7 @@ export default function LoanInfo() {
   };
 
   const validateCMND = (v: string) => {
-    if (!v.trim()) return ""; // được phép để trống
+    if (!v.trim()) return "";
     if (!/^[0-9]*$/.test(v)) return "CMND chỉ được chứa số";
     if (v.length !== 9) return "CMND phải gồm 9 số";
     return "";
@@ -73,7 +73,6 @@ export default function LoanInfo() {
   // ==========================
   // TÍNH TOÁN
   // ==========================
-
   const monthlyPayment = () => {
     const rate = 0.0325;
     const principal = amount;
@@ -87,7 +86,6 @@ export default function LoanInfo() {
   // ==========================
   // NEXT
   // ==========================
-
   const next = () => {
     const cleanAmount = Number(amount);
     const monthly = monthlyPayment();
@@ -106,8 +104,8 @@ export default function LoanInfo() {
         amount: `${formatVND(cleanAmount)} VNĐ`,
         term: `${term} tháng`,
         rate: "3.25%/tháng",
-        monthly: `${formatVND(monthly)} VNĐ`
-      }
+        monthly: `${formatVND(monthly)} VNĐ`,
+      },
     };
 
     sessionStorage.setItem("loanData", JSON.stringify(data));
@@ -115,9 +113,8 @@ export default function LoanInfo() {
   };
 
   // ==========================
-  // UI (KHÔNG THAY ĐỔI)
+  // UI
   // ==========================
-
   return (
     <Page className="bg-white">
       <div className="bg-green-600 text-white text-center py-4">
@@ -125,7 +122,21 @@ export default function LoanInfo() {
       </div>
 
       <Box className="px-6 pt-6">
-         {/* ===================== THANH TÍNH TIỀN BỊ XOÁ – THÊM LẠI ===================== */}
+
+        {/* ==== THANH KÉO SỐ TIỀN VAY ĐƯA LÊN TRƯỚC ==== */}
+        <Text className="font-bold mb-2">Số tiền cần vay</Text>
+        <div className="mb-6">
+          <Slider
+            min={5_000_000}
+            max={50_000_000}
+            step={1_000_000}
+            value={amount}
+            onChange={(v) => setAmount(Array.isArray(v) ? v[0] : v)}
+            label={`${formatVND(amount)} VND`}
+          />
+        </div>
+
+        {/* ==== BOX MỖI THÁNG PHẢI TRẢ (NGUYÊN UI) ==== */}
         <div className="bg-green-600 text-white rounded-2xl p-6 mb-6 text-center">
           <Text className="text-lg">Lãi suất từ: 3.25%/tháng</Text>
           <Text className="text-lg underline">Tìm hiểu thêm</Text>
@@ -134,9 +145,22 @@ export default function LoanInfo() {
           </Text>
         </div>
 
+        {/* ======================== KỲ HẠN VAY → DROPDOWN ======================== */}
+        <Text className="font-bold mb-2">Kỳ hạn vay</Text>
+        <Select
+          value={term}
+          onChange={(v) => setTerm(Number(v))}
+          className="mb-8"
+        >
+          {[3, 6, 9, 12, 18, 24, 36].map((m) => (
+            <Select.Option key={m} value={m}>{m} tháng</Select.Option>
+          ))}
+        </Select>
+
+        {/* ======================== CÁC PHẦN BÊN DƯỚI GIỮ NGUYÊN ======================== */}
+
         <Text className="text-xl font-bold mb-4">Thông tin người vay</Text>
 
-        {/* ==================== HỌ TÊN ==================== */}
         <Input
           label="Họ tên đầy đủ"
           value={name}
@@ -149,7 +173,6 @@ export default function LoanInfo() {
         />
         {nameError && <Text className="text-red-500 text-sm mb-3">{nameError}</Text>}
 
-        {/* ==================== SỐ ĐIỆN THOẠI ==================== */}
         <Input
           label="Số điện thoại"
           value={phone}
@@ -163,7 +186,6 @@ export default function LoanInfo() {
         />
         {phoneError && <Text className="text-red-500 text-sm mb-3">{phoneError}</Text>}
 
-        {/* ==================== CCCD ==================== */}
         <Input
           label="Số CCCD"
           value={cccd}
@@ -177,7 +199,6 @@ export default function LoanInfo() {
         />
         {cccdError && <Text className="text-red-500 text-sm mb-3">{cccdError}</Text>}
 
-        {/* ==================== CMND CŨ ==================== */}
         <Input
           label="Số CMND cũ (nếu có)"
           value={cmndOld}
@@ -191,41 +212,15 @@ export default function LoanInfo() {
         />
         {cmndOldError && <Text className="text-red-500 text-sm mb-3">{cmndOldError}</Text>}
 
-        {/* ==================== GIỮ NGUYÊN CÁC PHẦN KHÁC ==================== */}
-
         <div className="flex items-center mb-6">
           <Checkbox
             value="insurance"
             checked={insurance}
-            onChange={(e: { target: { checked: boolean } }) => setInsurance(e.target.checked)}
+            onChange={(e: { target: { checked: boolean } }) =>
+              setInsurance(e.target.checked)
+            }
           />
           <Text className="ml-3">Bảo hiểm khoản vay</Text>
-        </div>
-
-        {/* Slider tiền */}
-        <Text className="font-bold mb-2">Số tiền cần vay</Text>
-        <div className="mb-6">
-          <Slider
-            min={5_000_000}
-            max={50_000_000}
-            step={1_000_000}
-            value={amount}
-            onChange={(v) => setAmount(Array.isArray(v) ? v[0] : v)}
-            label={`${formatVND(amount)} VND`}
-          />
-        </div>
-
-        {/* Slider kỳ hạn */}
-        <Text className="font-bold mb-2">Kỳ hạn vay</Text>
-        <div className="mb-8">
-          <Slider
-            min={3}
-            max={36}
-            step={3}
-            value={term}
-            onChange={(v) => setTerm(Array.isArray(v) ? v[0] : v)}
-            label={`${term} tháng`}
-          />
         </div>
 
         <div className="bg-blue-50 rounded-xl p-4 flex mb-8 items-start">
@@ -235,7 +230,6 @@ export default function LoanInfo() {
           </Text>
         </div>
 
-        {/* ==================== NÚT TIẾP THEO ==================== */}
         <Button
           className="w-full bg-green-600 text-white font-bold text-lg rounded-full"
           size="large"
